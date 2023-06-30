@@ -9,10 +9,20 @@ interface Prop {
 export const ContactUs = ({ onSubmit, onInvalid }: Prop) => {
   const form = useRef<HTMLFormElement>(null);
   const [showLoading, setShowLoading] = useState(false);
+  let checkboxValue = "Not accepted";
+
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (checkboxValue === "Not accepted") {
+      checkboxValue = "Accepted";
+      e.target.value = "Accepted";
+    } else {
+      checkboxValue = "Not accepted";
+      e.target.value = "Not accepted";
+    }
+    console.log(e.target.value);
+  };
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
-    if (showLoading) return;
-
     setShowLoading(true);
     e.preventDefault();
 
@@ -91,6 +101,9 @@ export const ContactUs = ({ onSubmit, onInvalid }: Prop) => {
           type="checkbox"
           className="form-check-input"
           name="terms_check"
+          onChange={(e) => handleCheckBoxChange(e)}
+          value={checkboxValue}
+          id="flexCheckDefault"
         />
         <label className="form-check-label">Accepter nogle betingelser?</label>
       </div>
