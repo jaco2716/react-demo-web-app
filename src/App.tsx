@@ -29,7 +29,7 @@ function App() {
           color="danger"
           onClick={() => setShowAlert(true)}
         /> */}
-        <h1 style={{ height: "70px", color: "orange" }}>Web App Demo</h1>
+        <h1 style={{ height: "70px", color: "blue" }}>Web App Demo</h1>
         <ContactUs onSubmit={handleSubmit} onInvalid={handleSubmitError} />
         <div style={{ height: "20px" }}></div>
         {showSentAlert && (
