@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 interface Prop {
@@ -8,10 +8,12 @@ interface Prop {
 
 export const ContactUs = ({ onSubmit, onInvalid }: Prop) => {
   const form = useRef<HTMLFormElement>(null);
+  const [showLoading, setShowLoading] = useState(false);
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
-    onSubmit();
+    if (showLoading) return;
 
+    setShowLoading(true);
     e.preventDefault();
 
     emailjs
@@ -24,9 +26,13 @@ export const ContactUs = ({ onSubmit, onInvalid }: Prop) => {
       .then(
         (result) => {
           console.log(result.text);
+          onSubmit();
+          setShowLoading(false);
         },
         (error) => {
           console.log(error.text);
+          onInvalid();
+          setShowLoading(false);
         }
       );
   };
@@ -84,15 +90,27 @@ export const ContactUs = ({ onSubmit, onInvalid }: Prop) => {
         <input
           type="checkbox"
           className="form-check-input"
-          id="exampleCheck1"
           name="terms_check"
         />
         <label className="form-check-label">Accepter nogle betingelser?</label>
       </div>
       <div className="d-grid gap-2">
-        <button type="submit" className="btn btn-primary">
-          Send
-        </button>
+        {!showLoading && (
+          <button type="submit" className="btn btn-primary">
+            <span>Send</span>
+          </button>
+        )}
+
+        {showLoading && (
+          <button type="submit" className="btn btn-secondary" disabled>
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span> Loading...</span>
+          </button>
+        )}
       </div>
     </form>
   );
